@@ -16,17 +16,25 @@ public class DirectorController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Director>> Post([FromBody] Director director) // Vem do corpo da requisição 
     {   //Toda vez que for async tem que ter uma Task
-         _context.Directors.Add(director);
-         await _context.SaveChangesAsync();
-         return Ok(director);
+        _context.Directors.Add(director);
+        await _context.SaveChangesAsync();
+        return Ok(director);
     }
 
+    //GET All Directors
     [HttpGet]
     public async Task<List<Director>> Get()
     {
         return await _context.Directors.ToListAsync();
     }
-        
+
+    //GET One Director
+    [HttpGet]
+    public async Task<ActionResult<Director>> GetAll(long id)
+    {
+        var director = await _context.Directors.FirstOrDefaultAsync(director => director.Id == id);
+        return Ok(director);
+    }
 
     [HttpPut]
     public string Put()
@@ -34,7 +42,7 @@ public class DirectorController : ControllerBase
         return "Put";
     }
 
-    
+
 
     [HttpDelete]
     public string Delete()
