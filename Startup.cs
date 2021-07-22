@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace WebAPIProject
+namespace ProjetoWebAPI
 {
     public class Startup
     {
