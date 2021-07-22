@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ProjetoWebAPI.Migrations
+namespace WebAPIProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210714165205_PrimeiraVersao")]
+    [Migration("20210722113233_PrimeiraVersao")]
     partial class PrimeiraVersao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace ProjetoWebAPI.Migrations
 
             modelBuilder.Entity("Movie", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
