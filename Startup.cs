@@ -1,3 +1,4 @@
+  
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +7,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace ProjetoWebAPI
+namespace WebAPI
 {
     public class Startup
     {
@@ -31,10 +32,9 @@ namespace ProjetoWebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjetoWebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite("Data Source=myapi.db"));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=myapp.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +46,7 @@ namespace ProjetoWebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjetoWebAPI v1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1");
                     c.RoutePrefix = string.Empty;
                 });
                 // app.Run(async context => { //Abrir o swagger ao iniciar a API
@@ -55,18 +55,18 @@ namespace ProjetoWebAPI
 
             }
 
+            app.UseHttpsRedirection(); //Redireciona requisições HTTP para HTTPS
 
+            app.UseRouting(); //Define endpoints
 
-            app.UseHttpsRedirection();
+            app.UseAuthorization(); // Autorização dos endpoints
 
-            app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware)); //Tudo que vir do usuário passará pelo middleware
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            }); //Mapeia os controllers para serem endpoints
         }
     }
 }
