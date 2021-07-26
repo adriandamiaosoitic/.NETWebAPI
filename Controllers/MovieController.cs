@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
 
             if (!movies.Any())
             {
-                return NotFound("There are no movies registered!");
+                throw new Exception("There are no movies registered!");
             }
             var movieOutputGetAllDto = new List<MovieOutputGetAllDTO>();
             foreach (Movie movie in movies)
@@ -46,9 +46,11 @@ namespace WebAPI.Controllers
 
             var movie = await _context.Movies.Include(movie => movie.Director).FirstOrDefaultAsync(movie => movie.Id == id);
 
+                
+
             if (movie == null)
             {
-                return NotFound("Movie not found!");
+                throw new Exception("Movie not found!");
             }
 
             var movieOutputGetByIdDto = new MovieOutputGetByIdDTO(movie.Id, movie.Title, movie.DirectorId, movie.Director.Name);
@@ -65,7 +67,7 @@ namespace WebAPI.Controllers
 
             if (director == null)
             {
-                return NotFound("Director does not exists!");
+                throw new Exception("Director does not exists!");
             }
 
             var movie = new Movie(movieInputPostDto.Title, director.Id);
@@ -90,11 +92,11 @@ namespace WebAPI.Controllers
 
             if (id == 0)
             {
-                return NotFound("Invalid movie Id!");
+                throw new Exception("Invalid movie Id!");
             }
             if (movieInputPutDto.Title == "")
             {
-                return NotFound("Invalid director name!");
+                throw new Exception("Invalid director name!");
             }
 
             movie.Id = id;
@@ -113,12 +115,11 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> Delete(long id)
         {
 
-
             var movie = await _context.Movies.FirstOrDefaultAsync(movie => movie.Id == id);
 
             if (movie == null)
             {
-                return NotFound("Director does not exists!");
+                throw new Exception("Director does not exists!");
             }
 
 

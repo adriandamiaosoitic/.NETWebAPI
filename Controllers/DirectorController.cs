@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
 
             if (!directors.Any())
             {
-                return NotFound("There are no directors registered!");
+                throw new Exception("There are no directors registered!");
             }
 
             var directorOutputGetAllDto = new List<DirectorOutputGetAllDTO>();
@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
 
             if (director == null)
             {
-                return NotFound("Director not found!");
+                throw new Exception("Director not found!");
             }
 
             var directorOutputGetByIdDto = new DirectorOutputGetByIdDTO(director.Id, director.Name);
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
 
             if (directorInputPostDto.Name == "")
             {
-                return NotFound("Invalid director name!");
+                throw new Exception("Invalid director name!");
             }
 
             _context.Directors.Add(director);
@@ -85,11 +85,11 @@ namespace WebAPI.Controllers
 
             if (id == 0)
             {
-                return NotFound("Invalid director Id!");
+                throw new Exception("Invalid director Id!");
             }
             if (directorInputPut.Name == "")
             {
-                return NotFound("Invalid director name!");
+                throw new Exception("Invalid director name!");
             }
 
             director.Id = id;
@@ -108,7 +108,7 @@ namespace WebAPI.Controllers
 
             if (director == null)
             {
-                return NotFound("Director does not exists!");
+                throw new Exception("Director does not exists!");
             }
             _context.Remove(director);
             await _context.SaveChangesAsync();
